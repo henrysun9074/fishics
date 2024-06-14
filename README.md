@@ -7,10 +7,14 @@ This project integrates environmental DNA (eDNA) data with oceanographic variabl
 
 ### Objectives
 
-1. **1**: Determine if nonlinear machine learning models outperform linear dimensionality reduction techniques in encoding a 2D representation of the data.
-2. **2**: Investigate if there exists a significant correlation between observed eDNA-oceanography patterns and seasonality.
+**1**: Determine if nonlinear machine learning models outperform linear dimensionality reduction techniques in encoding a 2D representation of the data.
+**2**: Investigate if there exists a significant correlation between observed eDNA-oceanography patterns and seasonality.
 
 ## Data Sources
+
+TBA
+
+## Code
 
 TBA
 
@@ -18,7 +22,6 @@ TBA
 
 - **Dimensionality Reduction**: Compare the effectiveness of nonlinear methods like t-distributed Stochastic Neighbor Embedding (t-SNE) and Variational Autoencoders (VAEs) against linear methods like Principal Component Analysis (PCA).
 - **Machine Learning Models**: Use Random Forests (RF) to analyze the correlation between eDNA-oceanography patterns and seasonality.
-
 
 ## Impact
 
@@ -46,11 +49,3 @@ Below is a 10-week timetable outlining the plans for completing this research pr
 
 - **Henry Sun** - Marine Science and Conservation, Duke University, Durham NC, USA. hs325 [at] duke.edu
 - **Josh Kohut** - Department of Marine and Coastal Sciences, Rutgers University, New Brunswick NJ, USA. kohut [at] marine.rutgers.edu
-
-
-
-- Lacoursiere, 2016
-- Stoeckle et al., 2021
-- Makiola et al., 2019
-- Ruppert et al., 2019
-- Lamperti et al., 2023
