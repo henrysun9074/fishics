@@ -94,4 +94,52 @@ library(betapart)
 (.packages())
 ```
 
+```{r mrm-workflow}
+# generated using gpt3 lol
+# Load necessary libraries
+library(vegan)  # For betapart functions
+library(stats)  # For dist function
+
+# Example data (replace with your actual data)
+pca_data <- matrix(rnorm(100), ncol = 2)  # Example PCA data
+tsne_data <- matrix(rnorm(100), ncol = 2)  # Example t-SNE data
+vae_data <- matrix(rnorm(100), ncol = 2)  # Example VAE data
+eDNA_presence_absence <- matrix(round(runif(100, 0, 1)), ncol = 10)  # Example eDNA presence/absence data
+
+# Compute Euclidean distance matrices
+dist_pca <- dist(pca_data, method = "euclidean")
+dist_tsne <- dist(tsne_data, method = "euclidean")
+dist_vae <- dist(vae_data, method = "euclidean")
+
+# Compute Jaccard's β-diversity matrix
+beta_diversity <- betapart::beta.pair(eDNA_presence_absence, method = "jaccard")
+
+# Example of using the distance matrices in MRM (ecodist package)
+mrm_result_pca <- MRM(dist_pca, beta_diversity)
+mrm_result_tsne <- MRM(dist_tsne, beta_diversity)
+mrm_result_vae <- MRM(dist_vae, beta_diversity)
+
+# Perform permutation tests to assess significance
+p_value_pca <- mrm_result_pca$pvalue
+p_value_tsne <- mrm_result_tsne$pvalue
+p_value_vae <- mrm_result_vae$pvalue
+
+# Compare effectiveness based on p-values and coefficients
+
+```
+
+Explanation:
+Euclidean Distance: The dist function in R computes pairwise distances between rows of a matrix using various methods ("euclidean", "manhattan", etc.). Here, "euclidean" calculates the straight-line distance between points in the reduced-dimensional space (2D for PCA, t-SNE, and VAE).
+
+Jaccard's β-Diversity: The betapart::beta.pair function calculates pairwise dissimilarities (β-diversity) between rows of a matrix representing presence/absence data (eDNA_presence_absence). Jaccard's β-diversity is appropriate for binary data (0/1) indicating the presence or absence of MOTUs across samples.
+
+Conclusion:
+By computing these distance matrices (Euclidean for continuous data and Jaccard's β-diversity for presence/absence data), you can quantitatively compare the effectiveness of PCA, t-SNE, and VAE in preserving the underlying structure of your eDNA and oceanographic data. These distance matrices are essential inputs for methods like Multiple Regression on Distance Matrices (MRM) to evaluate how well each dimensionality reduction technique captures the ecological relationships and patterns in your dataset.
+
+
+
+
+
+
+
 
