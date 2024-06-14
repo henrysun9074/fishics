@@ -48,11 +48,6 @@ biplot(prcomp(USArrests, scale = TRUE))
 # }
 
 ```
-```{r PCA-demo-2}
-
-```
-
-
 
 ```{r tSNE iris-demo}
 data(iris)
@@ -70,4 +65,26 @@ tsne_plot <- data.frame(x = tsne_out$Y[,1],
 ggplot(tsne_plot,label=Species) + geom_point(aes(x=x,y=y))
 
 ```
+
+
+```{r MRM-packages}
+
+# Function to check if a package is installed, and install it if not
+install_if_missing <- function(package) {
+  if (!require(package, character.only = TRUE)) {
+    install.packages(package, dependencies = TRUE)
+    library(package, character.only = TRUE)
+  }
+}
+
+# List of required packages
+packages <- c("stats", "umap", "Rtsne", "tensorflow", "keras", "vegan", "ecodist", 
+              "betapart", "ape", "mFD")
+
+
+library(vegan)
+# Still need to install keras/tensorflow, ecodist, betapart, mFD
+(.packages())
+```
+
 
