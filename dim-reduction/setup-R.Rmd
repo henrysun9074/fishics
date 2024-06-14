@@ -5,12 +5,12 @@
 
 # PCA for genotype data: https://bcm-uga.github.io/pcadapt/articles/pcadapt.html
 library(pcadapt)
-# Others
 library(stats)
-
- 
-# Load the required packages
+# tSNE
 library(Rtsne)
+
+#Visualization
+library(dplyr)
 library(ggplot2)
 ```
 
@@ -78,12 +78,18 @@ install_if_missing <- function(package) {
 }
 
 # List of required packages
-packages <- c("stats", "umap", "Rtsne", "tensorflow", "keras", "vegan", "ecodist", 
+packages <- c("stats", "Rtsne", "tensorflow", "keras", "vegan", "ecodist", 
               "betapart", "ape", "mFD")
 
-
 library(vegan)
-# Still need to install keras/tensorflow, ecodist, betapart, mFD
+library(ape)
+library(ecodist)
+library(betapart)
+
+# Still need to install mFD and TensorFlow. Installation not working
+# https://tensorflow.rstudio.com/install/ 
+
+# check loaded packages
 (.packages())
 ```
 
