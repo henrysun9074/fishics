@@ -49,6 +49,7 @@ biplot(prcomp(USArrests, scale = TRUE))
 
 ```
 
+
 ```{r tSNE iris-demo}
 data(iris)
 remove_iris_dup <- unique(iris)
