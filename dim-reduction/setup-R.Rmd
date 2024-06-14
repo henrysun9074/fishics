@@ -1,0 +1,31 @@
+```{r}
+# Install all the required packages
+# install.packages("Rtsne")
+# install.packages("ggplot2")
+
+# PCA for genotype data: https://bcm-uga.github.io/pcadapt/articles/pcadapt.html
+library(pcadapt)
+ 
+# Load the required packages
+library(Rtsne)
+library(ggplot2)
+```
+
+
+```{r tSNE iris-demo}
+data(iris)
+remove_iris_dup <- unique(iris)
+
+# Remove Duplicate data present in iris
+remove_iris_dup <- unique(iris)
+ 
+# Forming the matrix for the first four columns 
+iris_matrix <- as.matrix(remove_iris_dup[,1:4])
+
+tsne_out <- Rtsne(iris_matrix)
+tsne_plot <- data.frame(x = tsne_out$Y[,1], 
+                        y = tsne_out$Y[,2])
+ggplot(tsne_plot,label=Species) + geom_point(aes(x=x,y=y))
+
+```
+
