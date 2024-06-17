@@ -9,9 +9,17 @@ library(stats)
 # tSNE
 library(Rtsne)
 
-#Visualization
+# Visualization
 library(dplyr)
 library(ggplot2)
+```
+
+```{r vae-instal}
+install.packages("keras") # install the keras R package
+library(keras)
+install_keras(version = "release")  # install the core Keras library and TensorFlow
+set.seed(123)
+
 ```
 
 
@@ -86,13 +94,13 @@ library(vegan)
 library(ape)
 library(ecodist)
 library(betapart)
-
-# Still need to install mFD and TensorFlow. Installation not working
-# https://tensorflow.rstudio.com/install/ 
+library(tensorflow)
+library(mFD)
 
 # check loaded packages
 (.packages())
 ```
+
 
 ```{r mrm-workflow}
 # generated using gpt3 lol
