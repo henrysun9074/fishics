@@ -7,7 +7,7 @@ This project integrates environmental DNA (eDNA) data with oceanographic variabl
 
 ### Objectives
 
-**1**: Determine if nonlinear machine learning models outperform linear dimensionality reduction techniques in encoding a 2D representation of the data.
+**1**: Determine if nonlinear machine learning models outperform linear dimensionality reduction techniques in encoding a 2D representation of the data.  
 **2**: Investigate if there exists a significant correlation between observed eDNA-oceanography patterns and seasonality.
 
 ## Data Sources
