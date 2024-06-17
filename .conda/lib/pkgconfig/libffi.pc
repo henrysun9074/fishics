@@ -1,0 +1,11 @@
+prefix=/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/.conda
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+toolexeclibdir=${libdir}
+includedir=/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/.conda/include
+
+Name: libffi
+Description: Library supporting Foreign Function Interfaces
+Version: 3.4.2
+Libs: -L${toolexeclibdir} -lffi
+Cflags: -I${includedir}
