@@ -10,13 +10,13 @@ This project integrates environmental DNA (eDNA) data with oceanographic variabl
 **1**: Determine if nonlinear machine learning models outperform linear dimensionality reduction techniques in encoding a 2D representation of the data.  
 **2**: Investigate if there exists a significant correlation between observed eDNA-oceanography patterns and seasonality.
 
-## Data Sources
+## Workflow
 
-TBA
+Flow chart with workflow will be added upon project completion.
 
 ## Code
 
-TBA
+Keras/Tensorflow is being used for building a simple VAE for dimensionality reduction. The code will be run in Colab and the corresponding Jupyter notebook will be added to the repository at a later date.
 
 ## Methods
 
