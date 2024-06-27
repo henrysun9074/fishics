@@ -1,0 +1,43 @@
+```{r}
+# install.packages("betapart")
+# install.packages("ecodist")
+library(ecodist)
+```
+
+Load data from csv files
+```{r}
+# Load the presence/absence data
+Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/presence_absence_data.csv')
+
+# Load the Jaccard distance matrix
+jaccard_dist_matrix <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/jaccard_dist_matrix.csv'))
+
+coords_PCA <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/pca_latent_space.csv'))
+coords_tSNE <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/tsne_latent_space.csv'))
+coords_VAE <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/vae_latent_space_info.csv'))
+
+```
+
+
+```{r}
+# Calculate Euclidean distance matrices
+Dist_ls_PCA <- as.dist(dist(coords_PCA))
+Dist_ls_tSNE <- as.dist(dist(coords_tSNE))
+Dist_ls_VAE <- as.dist(dist(coords_VAE))
+
+# Summarize Jaccard distances if needed (e.g., mean across taxonomic units)
+jaccard_summary <- rowMeans(jaccard_dist_matrix)  # Example: mean across taxonomic units
+
+# # Perform MRM for each method
+# result_PCA <- MRM(formula = Dist_ls_PCA ~ jaccard_summary, nperm = 1000)
+# result_tSNE <- MRM(formula = Dist_ls_tSNE ~ jaccard_summary, nperm = 1000)
+# result_VAE <- MRM(formula = Dist_ls_VAE ~ jaccard_summary, nperm = 1000)
+# 
+# # Print the results
+# print(result_PCA)
+# print(result_tSNE)
+# print(result_VAE)
+
+
+```
+
