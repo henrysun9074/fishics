@@ -12,33 +12,27 @@ Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/
 # Load the Jaccard distance matrix
 # jaccard_dist_matrix <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/jaccard_dist_matrix.csv'))
 
-coords_PCA <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/pca_latent_space.csv'))
+coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/pca_latent_space.csv')
+# coords_PCA <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/pca_latent_space.csv'))
 coords_tSNE <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/tsne_latent_space.csv'))
 coords_VAE <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/vae_latent_space_info.csv'))
 
 ```
 
-
 ```{r}
-# Calculate Euclidean distance matrices
-Dist_ls_PCA <- as.dist(dist(coords_PCA))
-Dist_ls_tSNE <- as.dist(dist(coords_tSNE))
-Dist_ls_VAE <- as.dist(dist(coords_VAE))
 
-```
+# TODO: rewrite code for importing coords_pca to be able to calculate distance matrix for all 3 methods
 
-
-```{r}
 # x_test_encoded <- x_test_encoded_1 
 # coords_ts <- as.matrix(cbind(x_test_encoded[,1],  x_test_encoded[,2]))
 Dist_ls_PCA <- (dist(coords_pca, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
 Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
-
-Dist_ls_tSNE <- (dist(coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
-Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
-
-Dist_ls_VAE <- (dist(coords_VAE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
-Dist_ls_VAE <- Dist_ls_VAE / max(Dist_ls_VAE)
+# 
+# Dist_ls_tSNE <- (dist(coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+# Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
+# 
+# Dist_ls_VAE <- (dist(coords_VAE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+# Dist_ls_VAE <- Dist_ls_VAE / max(Dist_ls_VAE)
 
 # #running sequence beta diversity script
 # MRM(formula = Dist_ls ~ sequence_beta_div , nperm = 1000,
@@ -55,9 +49,16 @@ jacc_dist <- beta.pair(Data_presence, index.family="jaccard")
 matrix_jacc_dist <- as.numeric(jacc_dist$beta.jac)
 
 
-MRM(formula = Dist_ls ~ matrix_jacc_dist, nperm = 1000,
+result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
+    method = "linear", mrank = FALSE)
+result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
+    method = "linear", mrank = FALSE)
+result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 1000,
     method = "linear", mrank = FALSE)
 
+print(result_PCA)
+print(result_tSNE)
+print(result_VAE)
 ```
 
 Deprecated GPT code below
