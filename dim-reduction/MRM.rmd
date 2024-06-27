@@ -22,12 +22,13 @@ coords_VAE <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer
 ```{r}
 
 # TODO: rewrite code for importing coords_pca to be able to calculate distance matrix for all 3 methods
+# TODO: include percent deviance explained by each model, think about how to test parameter sensitivity
 
 # x_test_encoded <- x_test_encoded_1 
 # coords_ts <- as.matrix(cbind(x_test_encoded[,1],  x_test_encoded[,2]))
 Dist_ls_PCA <- (dist(coords_pca, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
 Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
-# 
+
 # Dist_ls_tSNE <- (dist(coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
 # Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
 # 
@@ -40,25 +41,25 @@ Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
 ```
 
 
-Calculate Jaccard b-diversity matrix
+Calculate Jaccard's b-diversity matrix
 
 ```{r}
 library(betapart)
 
 jacc_dist <- beta.pair(Data_presence, index.family="jaccard")
 matrix_jacc_dist <- as.numeric(jacc_dist$beta.jac)
+jacc_dist
 
-
-result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
-    method = "linear", mrank = FALSE)
-result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
-    method = "linear", mrank = FALSE)
-result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 1000,
-    method = "linear", mrank = FALSE)
-
-print(result_PCA)
-print(result_tSNE)
-print(result_VAE)
+# result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
+#     method = "linear", mrank = FALSE)
+# result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
+#     method = "linear", mrank = FALSE)
+# result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 1000,
+#     method = "linear", mrank = FALSE)
+# 
+# print(result_PCA)
+# print(result_tSNE)
+# print(result_VAE)
 ```
 
 Deprecated GPT code below
