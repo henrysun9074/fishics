@@ -9,35 +9,29 @@ Load data from csv files
 # Load the presence/absence data
 Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/presence_absence_data.csv')
 
-# Load the Jaccard distance matrix
-# jaccard_dist_matrix <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/jaccard_dist_matrix.csv'))
-
 coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/pca_latent_space.csv')
-# coords_PCA <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/pca_latent_space.csv'))
-coords_tSNE <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/tsne_latent_space.csv'))
-coords_VAE <-as.matrix(read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/vae_latent_space_info.csv'))
+coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/tsne_latent_space.csv')
+
+#testing diff VAE params
+coords_VAE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/vae_latent_space_info.csv')
+# coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaenewvae.csv')
 
 ```
 
+
 ```{r}
 
-# TODO: rewrite code for importing coords_pca to be able to calculate distance matrix for all 3 methods
 # TODO: include percent deviance explained by each model, think about how to test parameter sensitivity
 
-# x_test_encoded <- x_test_encoded_1 
-# coords_ts <- as.matrix(cbind(x_test_encoded[,1],  x_test_encoded[,2]))
-Dist_ls_PCA <- (dist(coords_pca, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_PCA <- (dist(coords_PCA, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
 Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
 
-# Dist_ls_tSNE <- (dist(coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
-# Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
+Dist_ls_tSNE <- (dist(coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
 # 
-# Dist_ls_VAE <- (dist(coords_VAE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
-# Dist_ls_VAE <- Dist_ls_VAE / max(Dist_ls_VAE)
+Dist_ls_VAE <- (dist(coords_VAE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_VAE <- Dist_ls_VAE / max(Dist_ls_VAE)
 
-# #running sequence beta diversity script
-# MRM(formula = Dist_ls ~ sequence_beta_div , nperm = 1000,
-#     method = "linear", mrank = FALSE)
 ```
 
 
@@ -48,31 +42,41 @@ library(betapart)
 
 jacc_dist <- beta.pair(Data_presence, index.family="jaccard")
 matrix_jacc_dist <- as.numeric(jacc_dist$beta.jac)
-jacc_dist
+# jacc_dist
 
-# result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
-#     method = "linear", mrank = FALSE)
-# result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
-#     method = "linear", mrank = FALSE)
-# result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 1000,
-#     method = "linear", mrank = FALSE)
-# 
-# print(result_PCA)
-# print(result_tSNE)
-# print(result_VAE)
 ```
 
-Deprecated GPT code below
+
 ```{r}
+result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
+    method = "linear", mrank = FALSE)
+result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
+    method = "linear", mrank = FALSE)
+result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 1000,
+    method = "linear", mrank = FALSE)
 
-# Perform MRM for each method
-result_PCA <- MRM(formula = as.dist(Dist_ls_PCA) ~ as.vector(jaccard_dist_matrix), nperm = 1000)
-result_tSNE <- MRM(formula = as.dist(Dist_ls_tSNE) ~ as.vector(jaccard_dist_matrix), nperm = 1000)
-result_VAE <- MRM(formula = as.dist(Dist_ls_VAE) ~ as.vector(jaccard_dist_matrix), nperm = 1000)
-
-# Print the results
 print(result_PCA)
 print(result_tSNE)
 print(result_VAE)
+```
+
+```{r}
+#GPT generating a table using manual inputs - reformat later
+
+# Data from your results
+methods <- c("Dist_ls_PCA", "Dist_ls_tSNE", "Dist_ls_VAE")
+intercepts <- c(-0.01568533, -0.03461545, 0.3164841)
+jaccard_coeffs <- c(0.58884884, 0.83372143, -0.0734740)
+r_squared <- c(0.1977618, 0.2738243, 0.0043924)
+p_values <- c(0.001, 0.001, 0.290)
+
+results <- data.frame(Method = methods,
+                      Intercept = intercepts,
+                      matrix_jacc_dist = jaccard_coeffs,
+                      R_squared = r_squared,
+                      p_value = p_values)
+
+results
+
 ```
 
