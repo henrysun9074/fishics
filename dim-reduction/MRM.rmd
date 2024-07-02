@@ -16,7 +16,7 @@ coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fis
 # coords_VAE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/vae_latent_space_info.csv')
 # coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae1.csv')
 # coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae2.csv')
-coords_VAE <- read.csv('/Users/henrysun_1/Downloads/reducelrvae.csv')
+coords_VAE <- read.csv('/Users/henrysun_1/Downloads/bestvae2.csv')
 
 
 ```
@@ -31,7 +31,7 @@ Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
 
 Dist_ls_tSNE <- (dist(coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
 Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
-# 
+
 Dist_ls_VAE <- (dist(coords_VAE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
 Dist_ls_VAE <- Dist_ls_VAE / max(Dist_ls_VAE)
 
@@ -55,7 +55,7 @@ result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
     method = "linear", mrank = FALSE)
 result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
     method = "linear", mrank = FALSE)
-result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 1000,
+result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 100,
     method = "linear", mrank = FALSE)
 
 print(result_PCA)
@@ -63,23 +63,4 @@ print(result_tSNE)
 print(result_VAE)
 ```
 
-```{r}
-#GPT generating a table using manual inputs - reformat later
-
-# Data from your results
-methods <- c("Dist_ls_PCA", "Dist_ls_tSNE", "Dist_ls_VAE")
-intercepts <- c(-0.01568533, -0.03461545, 0.3164841)
-jaccard_coeffs <- c(0.58884884, 0.83372143, -0.0734740)
-r_squared <- c(0.1977618, 0.2738243, 0.0043924)
-p_values <- c(0.001, 0.001, 0.290)
-
-results <- data.frame(Method = methods,
-                      Intercept = intercepts,
-                      matrix_jacc_dist = jaccard_coeffs,
-                      R_squared = r_squared,
-                      p_value = p_values)
-
-results
-
-```
 
