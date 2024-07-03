@@ -1,0 +1,85 @@
+```{r}
+# install.packages("betapart")
+# install.packages("ecodist")
+library(ecodist)
+```
+
+Load data from csv files
+```{r}
+# Load the presence/absence data
+winter_Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/winter_presence_absence_data.csv')
+spring_Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_presence_absence_data.csv')
+summer_Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/summer_presence_absence_data.csv')
+
+# Winter
+winter_coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_pca_latent_space.csv')
+winter_coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_tsne_latent_space.csv')
+
+# Spring
+spring_coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_pca_latent_space.csv')
+spring_coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_tsne_latent_space.csv')
+
+# Summer
+summer_coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/summer_pca_latent_space.csv')
+summer_coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/summer_tsne_latent_space.csv')
+
+```
+
+
+** WINTER **
+
+```{r}
+
+# TODO: include percent deviance explained by each model, think about how to test parameter sensitivity
+
+Dist_ls_PCA <- (dist(winter_coords_PCA, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
+
+Dist_ls_tSNE <- (dist(winter_coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
+
+# Dist_ls_VAE <- (dist(coords_VAE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+# Dist_ls_VAE <- Dist_ls_VAE / max(Dist_ls_VAE)
+
+# Dist_ls_PCA
+```
+
+
+Calculate Jaccard's b-diversity matrix
+
+```{r}
+library(betapart)
+
+jacc_dist <- beta.pair(winter_Data_presence, index.family="jaccard")
+matrix_jacc_dist <- as.numeric(jacc_dist$beta.jac)
+jacc_dist
+
+```
+
+
+```{r}
+result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
+    method = "linear", mrank = FALSE)
+result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
+    method = "linear", mrank = FALSE)
+# result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 100,
+#     method = "linear", mrank = FALSE)
+
+print(result_PCA)
+print(result_tSNE)
+# print(result_VAE)
+```
+
+** SPRING **
+
+```{r}
+
+```
+
+
+** SUMMER **
+
+```{r}
+
+```
+
