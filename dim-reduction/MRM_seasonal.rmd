@@ -1,85 +1,160 @@
+# 
+
+****
+WINTER 
+****
+
 ```{r}
-# install.packages("betapart")
-# install.packages("ecodist")
+# Load necessary libraries
 library(ecodist)
-```
-
-Load data from csv files
-```{r}
-# Load the presence/absence data
-winter_Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/winter_presence_absence_data.csv')
-spring_Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_presence_absence_data.csv')
-summer_Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/summer_presence_absence_data.csv')
-
-# Winter
-winter_coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_pca_latent_space.csv')
-winter_coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_tsne_latent_space.csv')
-
-# Spring
-spring_coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_pca_latent_space.csv')
-spring_coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_tsne_latent_space.csv')
-
-# Summer
-summer_coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/summer_pca_latent_space.csv')
-summer_coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/summer_tsne_latent_space.csv')
-
-```
-
-
-** WINTER **
-
-```{r}
-
-# TODO: include percent deviance explained by each model, think about how to test parameter sensitivity
-
-Dist_ls_PCA <- (dist(winter_coords_PCA, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
-Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
-
-Dist_ls_tSNE <- (dist(winter_coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
-Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
-
-# Dist_ls_VAE <- (dist(coords_VAE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
-# Dist_ls_VAE <- Dist_ls_VAE / max(Dist_ls_VAE)
-
-# Dist_ls_PCA
-```
-
-
-Calculate Jaccard's b-diversity matrix
-
-```{r}
 library(betapart)
 
-jacc_dist <- beta.pair(winter_Data_presence, index.family="jaccard")
-matrix_jacc_dist <- as.numeric(jacc_dist$beta.jac)
-jacc_dist
+# Load the data
+winter_data <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/winter_data.csv')
+
+# Extract PCA and tSNE coordinates
+winter_coords_PCA <- winter_data[, c("PCA1", "PCA2")]
+winter_coords_tSNE <- winter_data[, c("tSNE1", "tSNE2")]
+
+# Generate presence/absence data matrix
+columns_to_remove <- c('PCA1', 'PCA2', 'tSNE1', 'tSNE2')
+save_data <- winter_data[, !(names(winter_data) %in% columns_to_remove)]
+species_columns <- names(save_data)[which(names(save_data) == "primers") + 1:length(names(save_data))]
+# Filter out NA values from species_columns
+species_columns <- species_columns[!is.na(species_columns)]
+
+# Convert to presence/absence matrix
+winter_Data_presence <- save_data[, species_columns]
+winter_Data_presence <- apply(winter_Data_presence, 2, function(x) as.integer(x > 0))
 
 ```
 
-
 ```{r}
-result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
-    method = "linear", mrank = FALSE)
-result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
-    method = "linear", mrank = FALSE)
-# result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 100,
-#     method = "linear", mrank = FALSE)
+# Calculate Euclidean distances and normalize
+Dist_ls_PCA <- dist(winter_coords_PCA, method = "euclidean", diag = FALSE, upper = TRUE, p = 2)
+Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
 
+Dist_ls_tSNE <- dist(winter_coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2)
+Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
+
+# Calculate Jaccard's beta diversity matrix
+jacc_dist <- beta.pair(winter_Data_presence, index.family = "jaccard")
+matrix_jacc_dist <- as.dist(jacc_dist$beta.jac)
+
+# Ensure the lengths match
+if(length(Dist_ls_PCA) != length(matrix_jacc_dist)) {
+    stop("Lengths of distance matrices do not match.")
+}
+
+# Perform MRM analysis
+result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000, method = "linear", mrank = FALSE)
+result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000, method = "linear", mrank = FALSE)
+
+# Print results
 print(result_PCA)
 print(result_tSNE)
-# print(result_VAE)
-```
-
-** SPRING **
-
-```{r}
 
 ```
 
-
-** SUMMER **
+****
+SPRING 
+****
 
 ```{r}
+spring_data <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/spring_data.csv')
+
+# # Filter data for 'Feb_24' sampling bout
+# spring_data <- spring_data[spring_data$sampling_bout == 'Feb_24', ]
+
+# Extract PCA and tSNE coordinates
+spring_coords_PCA <- spring_data[, c("PCA1", "PCA2")]
+spring_coords_tSNE <- spring_data[, c("tSNE1", "tSNE2")]
+
+# Generate presence/absence data matrix
+columns_to_remove <- c('PCA1', 'PCA2', 'tSNE1', 'tSNE2')
+save_data <- spring_data[, !(names(spring_data) %in% columns_to_remove)]
+species_columns <- names(save_data)[which(names(save_data) == "primers") + 1:length(names(save_data))]
+# Filter out NA values from species_columns
+species_columns <- species_columns[!is.na(species_columns)]
+
+# Convert to presence/absence matrix
+spring_Data_presence <- save_data[, species_columns]
+spring_Data_presence <- apply(spring_Data_presence, 2, function(x) as.integer(x > 0))
+
+# Calculate Euclidean distances and normalize
+Dist_ls_PCA <- dist(spring_coords_PCA, method = "euclidean", diag = FALSE, upper = TRUE, p = 2)
+Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
+
+Dist_ls_tSNE <- dist(spring_coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2)
+Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
+
+# Calculate Jaccard's beta diversity matrix
+jacc_dist <- beta.pair(spring_Data_presence, index.family = "jaccard")
+matrix_jacc_dist <- as.dist(jacc_dist$beta.jac)
+
+# Ensure the lengths match
+if(length(Dist_ls_PCA) != length(matrix_jacc_dist)) {
+    stop("Lengths of distance matrices do not match.")
+}
+
+# Perform MRM analysis
+result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000, method = "linear", mrank = FALSE)
+result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000, method = "linear", mrank = FALSE)
+
+# Print results
+print(result_PCA)
+print(result_tSNE)
+
+```
+
+****
+SUMMER
+****
+
+```{r}
+summer_data <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/summer_data.csv')
+
+# # Filter data for 'Feb_24' sampling bout
+# summer_data <- summer_data[summer_data$sampling_bout == 'Feb_24', ]
+
+# Extract PCA and tSNE coordinates
+summer_coords_PCA <- summer_data[, c("PCA1", "PCA2")]
+summer_coords_tSNE <- summer_data[, c("tSNE1", "tSNE2")]
+
+# Generate presence/absence data matrix
+columns_to_remove <- c('PCA1', 'PCA2', 'tSNE1', 'tSNE2')
+save_data <- summer_data[, !(names(summer_data) %in% columns_to_remove)]
+species_columns <- names(save_data)[which(names(save_data) == "primers") + 1:length(names(save_data))]
+# Filter out NA values from species_columns
+species_columns <- species_columns[!is.na(species_columns)]
+
+# Convert to presence/absence matrix
+summer_Data_presence <- save_data[, species_columns]
+summer_Data_presence <- apply(summer_Data_presence, 2, function(x) as.integer(x > 0))
+
+# Calculate Euclidean distances and normalize
+Dist_ls_PCA <- dist(summer_coords_PCA, method = "euclidean", diag = FALSE, upper = TRUE, p = 2)
+Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
+
+Dist_ls_tSNE <- dist(summer_coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2)
+Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
+
+# Calculate Jaccard's beta diversity matrix
+jacc_dist <- beta.pair(summer_Data_presence, index.family = "jaccard")
+matrix_jacc_dist <- as.dist(jacc_dist$beta.jac)
+
+# Ensure the lengths match
+if(length(Dist_ls_PCA) != length(matrix_jacc_dist)) {
+    stop("Lengths of distance matrices do not match.")
+}
+
+# Perform MRM analysis
+result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000, method = "linear", mrank = FALSE)
+result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000, method = "linear", mrank = FALSE)
+
+# Print results
+print(result_PCA)
+print(result_tSNE)
 
 ```
 
