@@ -2,6 +2,7 @@
 # install.packages("betapart")
 # install.packages("ecodist")
 library(ecodist)
+library(betapart)
 ```
 
 Load data from csv files
@@ -9,8 +10,13 @@ Load data from csv files
 # Load the presence/absence data
 Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/presence_absence_data.csv')
 
+jacc_dist <- beta.pair(Data_presence, index.family="jaccard")
+matrix_jacc_dist <- as.numeric(jacc_dist$beta.jac)
+# jacc_dist
+
 coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/pca_latent_space.csv')
 coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/tsne_latent_space.csv')
+coords_UMAP <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/data/umap_latent_space.csv')
 
 #testing diff VAE params
 # coords_VAE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/vae_latent_space_info.csv')
@@ -25,8 +31,6 @@ coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae4.csv')
 
 ```{r}
 
-# TODO: include percent deviance explained by each model, think about how to test parameter sensitivity
-
 Dist_ls_PCA <- (dist(coords_PCA, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
 Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
 
@@ -36,32 +40,23 @@ Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
 Dist_ls_VAE <- (dist(coords_VAE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
 Dist_ls_VAE <- Dist_ls_VAE / max(Dist_ls_VAE)
 
-```
+Dist_ls_UMAP <- (dist(coords_UMAP, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_UMAP <- Dist_ls_UMAP / max(Dist_ls_UMAP)
 
-
-Calculate Jaccard's b-diversity matrix
-
-```{r}
-library(betapart)
-
-jacc_dist <- beta.pair(Data_presence, index.family="jaccard")
-matrix_jacc_dist <- as.numeric(jacc_dist$beta.jac)
-# jacc_dist
-
-```
-
-
-```{r}
 result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
     method = "linear", mrank = FALSE)
 result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
     method = "linear", mrank = FALSE)
 result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 100,
     method = "linear", mrank = FALSE)
+result_UMAP <- MRM(formula = Dist_ls_UMAP ~ matrix_jacc_dist, nperm = 100,
+    method = "linear", mrank = FALSE)
 
 print(result_PCA)
 print(result_tSNE)
 print(result_VAE)
+print(result_UMAP)
+
 ```
 
 
