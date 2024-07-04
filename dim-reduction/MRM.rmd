@@ -16,8 +16,9 @@ coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fis
 # coords_VAE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/vae_latent_space_info.csv')
 # coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae1.csv')
 # coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae2.csv')
-coords_VAE <- read.csv('/Users/henrysun_1/Downloads/bestvae1.csv')
+coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae4.csv')
 
+## TODO: update github with final vae implementation + corresponding csv file
 
 ```
 
