@@ -16,15 +16,13 @@ matrix_jacc_dist <- as.numeric(jacc_dist$beta.jac)
 
 coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/pca_latent_space.csv')
 coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/tsne_latent_space.csv')
-coords_UMAP <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/data/umap_latent_space.csv')
+coords_UMAP <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/umap_latent_space.csv')
 
-#testing diff VAE params
-# coords_VAE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/vae_latent_space_info.csv')
-# coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae1.csv')
-# coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae2.csv')
-coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae4.csv')
-
-## TODO: update github with final vae implementation + corresponding csv file
+# testing diff VAE params
+# coords_VAE <- read.csv('/Users/henrysun_1/Downloads/vaevae4.csv')
+# coords_VAE <- read.csv('/Users/henrysun_1/Downloads/bestvae1.csv')
+coords_VAE <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/bestvae2.csv')
+# bestVAE2 built with newest VAE implementation
 
 ```
 
