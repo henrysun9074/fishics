@@ -16,7 +16,7 @@ Flow chart with workflow will be added upon project completion.
 
 ## Code
 
-Keras/Tensorflow is being used for building a simple VAE for dimensionality reduction. The code will be run in Colab and the corresponding Jupyter notebook will be added to the repository at a later date.
+Keras/Tensorflow is being used for building a simple VAE for dimensionality reduction in Colab. Random forests, PCA, tSNE, and UMAP were all ran in Python using sklearn and umap. 
 
 ## Methods
 
@@ -32,18 +32,18 @@ Keras/Tensorflow is being used for building a simple VAE for dimensionality redu
 
 Below is a 10-week timetable outlining the plans for completing this research project:
 
-| Week | Activities |
-|------|-------------|
-| 1    | Orientation, introduction, meet the teams |
-| 2    | Glider background and write proposal |
-| 3    | Software installation and acquire eDNA/ocean data, decide on an ML method |
-| 4    | First integration test to combine datasets |
-| 5    | Debugging with databases and data wrangling |
-| 6    | Explore connection between ocean and eDNA data |
-| 7    | Explore connection between ocean and eDNA data, run dimensionality reduction tests |
-| 8    | Run ML models for analysis and data visualization, hyperparameter tuning |
-| 9    | Run ML models, finalize analysis and scientific story |
-| 10   | Prepare presentation and poster |
+| **Week** | **Activities**                                      |
+|----------|-----------------------------------------------------|
+| Week 1   | Orientation, introduction, meet the teams           |
+| Week 2   | Glider background and write proposal                |
+| Week 3   | Software installation, get eDNA/ocean data, make hypotheses |
+| Week 4   | Dimensionality reduction, access oceanographic data |
+| Week 5   | Debugging with dimensionality reduction             |
+| Week 6   | 1st integration test complete to combine datasets   |
+| Week 7   | Explore connection between ocean and eDNA data      |
+| Week 8   | Build random forest model in Python     |
+| Week 9   | Run models, finalize analysis/scientific story      |
+| Week 10  | Prepare presentation and poster          |
 
 ## Contact
 
