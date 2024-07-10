@@ -7,7 +7,7 @@ This project integrates environmental DNA (eDNA) data with oceanographic variabl
 
 ### Objectives
 
-**1**: Determine if nonlinear machine learning models outperform linear dimensionality reduction techniques in encoding a 2D representation of the data.  
+**1**: Determine if nonlinear methods (tSNE, UMAP, VAE) outperform linear dimensionality reduction techniques (PCA) in encoding a 2D representation of the data.  
 **2**: Investigate if there exists a significant correlation between observed eDNA-oceanography patterns and seasonality.
 
 ## Workflow
@@ -16,11 +16,11 @@ Flow chart with workflow will be added upon project completion.
 
 ## Code
 
-Keras/Tensorflow is being used for building a simple VAE for dimensionality reduction in Colab. Random forests, PCA, tSNE, and UMAP were all ran in Python using sklearn and umap. 
+Keras/Tensorflow is being used for building a simple VAE for dimensionality reduction in Colab. Random forests, PCA, and tSNE were all ran in Python using sklearn; UMAP was ran in R using umap. 
 
 ## Methods
 
-- **Dimensionality Reduction**: Compare the effectiveness of nonlinear methods like t-distributed Stochastic Neighbor Embedding (t-SNE) and Variational Autoencoders (VAEs) against linear methods like Principal Component Analysis (PCA).
+- **Dimensionality Reduction**: Compare the effectiveness of nonlinear methods like t-distributed Stochastic Neighbor Embedding (t-SNE) and Variational Autoencoders (VAEs) against linear methods like Principal Component Analysis (PCA). More details about evaluation metrics will be added later.
 - **Machine Learning Models**: Use Random Forests (RF) to analyze the correlation between eDNA-oceanography patterns and seasonality.
 
 ## Impact
