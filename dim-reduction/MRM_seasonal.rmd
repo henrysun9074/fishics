@@ -8,6 +8,7 @@ WINTER
 # Load necessary libraries
 library(ecodist)
 library(betapart)
+set.seed(1)
 
 # Load the data
 winter_data <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/winter_data.csv')

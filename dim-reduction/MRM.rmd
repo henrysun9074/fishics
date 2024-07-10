@@ -28,6 +28,7 @@ coords_VAE <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fis
 
 
 ```{r}
+set.seed(1)
 
 Dist_ls_PCA <- (dist(coords_PCA, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
 Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
