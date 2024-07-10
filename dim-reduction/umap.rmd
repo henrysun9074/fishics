@@ -19,7 +19,7 @@ umap_result <- umap(fish_asvs_scaled, n_neighbors = 10, min_dist = 0.1, n_compon
 umap_df <- data.frame(UMAP1 = umap_result$layout[, 1], UMAP2 = umap_result$layout[, 2], date = data$date)
 
 # Save the UMAP results to a CSV file
-write_csv(umap_df, "/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/data/umap_latent_space.csv")
+write_csv(umap_df, "/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/umap_latent_space.csv")
 
 # Add UMAP results to original data
 data <- data %>%
