@@ -1,0 +1,106 @@
+```{r}
+# install.packages("betapart")
+# install.packages("ecodist")
+library(ecodist)
+library(betapart)
+```
+
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(umap)
+library(scales)
+
+# Load data
+data <- read_csv("/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/prab/data_prab.csv")
+fish_asvs <- data %>%
+  select(12:ncol(data))
+
+fish_asvs_scaled <- scale(fish_asvs)
+
+# Perform UMAP
+umap_result <- umap(fish_asvs_scaled, n_neighbors = 10, min_dist = 0.1, n_components = 2, random_state = 42)
+
+# Create a new data frame with UMAP results and date
+umap_df <- data.frame(UMAP1 = umap_result$layout[, 1], UMAP2 = umap_result$layout[, 2], date = data$date)
+
+# Save the UMAP results to a CSV file
+write_csv(umap_df, "/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/prab/umap_prab_latent_space.csv")
+
+# Add UMAP results to original data
+data <- data %>%
+  mutate(UMAP1 = umap_result$layout[, 1],
+         UMAP2 = umap_result$layout[, 2])
+
+# Plot UMAP results colored by date
+ggplot(data, aes(x = UMAP1, y = UMAP2, color = date)) +
+  geom_point(size = 3) +
+  scale_color_manual(values = hue_pal()(length(unique(data$date)))) +
+  theme_minimal() +
+  ggtitle("UMAP of Fish ASVs colored by date") +
+  xlab("UMAP Component 1") +
+  ylab("UMAP Component 2") +
+  theme(legend.position = "right")
+
+umap_df
+```
+
+
+Load data from csv files
+```{r}
+# Load the presence/absence data
+Data_presence <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/presence_absence_data.csv')
+
+jacc_dist <- beta.pair(Data_presence, index.family="jaccard")
+matrix_jacc_dist <- as.numeric(jacc_dist$beta.jac)
+# jacc_dist
+
+
+## RAN ON PRESENCE ABSENCE
+
+coords_PCA <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/prab/pca_prab_latent_space.csv')
+coords_tSNE <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/prab/tsne_prab_latent_space.csv')
+coords_UMAP <-read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/prab/umap_prab_latent_space.csv')
+
+# testing diff VAE params
+# coords_VAE <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/prab/vaeprab.csv')
+coords_VAE <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/dim-reduction/prab/vaeprab2.csv')
+## vaeprab2 was trained w/o learning rate adjustment
+
+```
+
+
+```{r}
+set.seed(1)
+
+Dist_ls_PCA <- (dist(coords_PCA, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_PCA <- Dist_ls_PCA / max(Dist_ls_PCA)
+
+Dist_ls_tSNE <- (dist(coords_tSNE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_tSNE <- Dist_ls_tSNE / max(Dist_ls_tSNE)
+
+Dist_ls_VAE <- (dist(coords_VAE, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_VAE <- Dist_ls_VAE / max(Dist_ls_VAE)
+
+Dist_ls_UMAP <- (dist(coords_UMAP, method = "euclidean", diag = FALSE, upper = TRUE, p = 2))
+Dist_ls_UMAP <- Dist_ls_UMAP / max(Dist_ls_UMAP)
+
+result_PCA <- MRM(formula = Dist_ls_PCA ~ matrix_jacc_dist, nperm = 1000,
+    method = "linear", mrank = FALSE)
+result_tSNE <- MRM(formula = Dist_ls_tSNE ~ matrix_jacc_dist, nperm = 1000,
+    method = "linear", mrank = FALSE)
+result_VAE <- MRM(formula = Dist_ls_VAE ~ matrix_jacc_dist, nperm = 100,
+    method = "linear", mrank = FALSE)
+result_UMAP <- MRM(formula = Dist_ls_UMAP ~ matrix_jacc_dist, nperm = 100,
+    method = "linear", mrank = FALSE)
+
+print(result_PCA)
+print(result_tSNE)
+print(result_VAE)
+print(result_UMAP)
+
+```
+
+
