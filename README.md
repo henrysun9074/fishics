@@ -8,7 +8,7 @@ This project integrates environmental DNA (eDNA) data with oceanographic variabl
 ### Objectives
 
 **1**: Determine if nonlinear methods (tSNE, UMAP, VAE) outperform linear dimensionality reduction techniques (PCA) in encoding a 2D representation of the data.  
-**2**: Investigate if there exists a significant correlation between observed eDNA-oceanography patterns and seasonality.
+**2**: Investigate if there exists a significant correlation between observed eDNA-oceanography patterns and seasonality. First, used random forest model to predict species presence/absence from oceanographic variables (Q2A). Second, used random forests to predict community structure and location (whether a certain cluster would be present) from oceanographic variables.
 
 ## Workflow
 
