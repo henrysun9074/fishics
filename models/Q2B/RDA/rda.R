@@ -1,8 +1,10 @@
 # library(readxl)
 # library(dplyr)
 library(vegan)
-spe <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/edna_csv2.csv') 
-env <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/eDNAENV.csv')
+# spe <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/edna_csv2.csv') 
+spe <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/aug_edna.csv')
+# env <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/eDNAENV.csv')
+env <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/augeDNAenv.csv')
 
 # Exploring eDNA data
 names(spe)
@@ -34,7 +36,7 @@ round(apply(env.z, 2, mean), 1)
 
 
 # RDA
-env.z <- subset(env.z, select = -salt_strat) # remove salinity stratification
+env.z <- subset(env.z) 
 spe.rda <- rda(spe.hel ~ ., data = env.z)
 summary(spe.rda)
 
