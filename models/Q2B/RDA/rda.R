@@ -2,9 +2,11 @@
 # library(dplyr)
 library(vegan)
 # spe <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/edna_csv2.csv') 
-spe <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/aug_edna.csv')
+# spe <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/aug_edna.csv')
+spe <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/febednacsv.csv')
 # env <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/eDNAENV.csv')
-env <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/augeDNAenv.csv')
+# env <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/augeDNAenv.csv')
+env <- read.csv('/Users/henrysun_1/Desktop/Duke/2024-2025/Summer 2024/fishics/models/Q2B/RDA/envcsvfeb.csv')
 
 # Exploring eDNA data
 names(spe)
